@@ -11,6 +11,7 @@ ENV CEPH_VERSION infernalis
 
 ENV KVIATOR_VERSION 0.0.5
 ENV CONFD_VERSION 0.10.0
+ENV CONSUL_TEMPLATE_VERSION 0.12.2
 
 # Install prerequisites
 RUN apt-get update &&  apt-get install -y wget unzip uuid-runtime
@@ -32,6 +33,11 @@ RUN cd /usr/local/bin && unzip /tmp/kviator.zip && chmod +x /usr/local/bin/kviat
 # Install confd
 ADD https://github.com/kelseyhightower/confd/releases/download/v${CONFD_VERSION}/confd-${CONFD_VERSION}-linux-amd64 /usr/local/bin/confd
 RUN chmod +x /usr/local/bin/confd && mkdir -p /etc/confd/conf.d && mkdir -p /etc/confd/templates
+
+# Install consul-template
+https://releases.hashicorp.com/consul-template/0.12.2/consul-template_0.12.2_linux_amd64.zip
+ADD https://releases.hashicorp.com/consul-template/${CONSUL_TEMPLATE_VERSION}/consul-template_${CONSUL_TEMPLATE_VERSION}_linux_amd64.zip /tmp/consul-template.zip
+RUN cd /usr/local/bin && unzip /tmp/consul-template.zip && chmod +x /usr/local/bin/consul-template && rm /tmp/consul-template.zip
 
 ADD entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
